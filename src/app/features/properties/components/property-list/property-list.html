@@ -1,0 +1,38 @@
+<div class="container mx-auto p-8 bg-gray-50 min-h-screen">
+  <h1
+    class="text-5xl font-extrabold text-center text-gray-900 mb-12 drop-shadow-lg"
+  >
+    Cesar's Real Estate
+  </h1>
+
+  <div
+    class="mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 p-6 bg-white rounded-xl shadow-md"
+  >
+    <input
+      type="text"
+      placeholder="Filtar por ciudad"
+      [(ngModel)]="filterCity"
+      class="flex-grow w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"
+    />
+    <button
+      class="w-full sm:w-auto bg-indigo-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-300 shadow-md"
+      (click)="searchProperties()"
+    >
+      Buscar
+    </button>
+  </div>
+
+  @if (loading) {
+  <div>Cargando propiedades...</div>
+  } @else if (error) {
+  <div>Error cargando las propiedades: {{ error }}</div>
+  } @else {
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+  >
+    @for (property of properties; track property.id) {
+      <app-property-card [info]="property" num="10" (detail)="showDetail($event)"> </app-property-card>
+    }
+  </div>
+  }
+</div>
