@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Property } from '../../model/property.model';
 import { CurrencyPipe } from '@angular/common';
 
@@ -10,12 +10,13 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class PropertyCard {
 
-  @Input() info!: Property;
-  @Input() num!: string;
+  info = input.required<Property>() ;
+  
+  num = input<number>(1);
 
-  @Output() detail = new EventEmitter<number>();
+  detail = output<number>();
 
   onClickDetails(){
-    this.detail.emit(this.info.id);
+    this.detail.emit(this.info().id);
   }
 }

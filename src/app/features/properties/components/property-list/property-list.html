@@ -22,17 +22,17 @@
     </button>
   </div>
 
-  @if (loading) {
-  <div>Cargando propiedades...</div>
-  } @else if (error) {
-  <div>Error cargando las propiedades: {{ error }}</div>
+  @if (loading()) {
+    <div>Cargando propiedades...</div>
+  } @else if (error()) {
+    <div><b>Error cargando las propiedades</b>: {{ error() }}</div>
   } @else {
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-  >
-    @for (property of properties; track property.id) {
-      <app-property-card [info]="property" num="10" (detail)="showDetail($event)"> </app-property-card>
-    }
-  </div>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+    >
+      @for (property of properties(); track property.id) {
+        <app-property-card [info]="property" [num]="property.id" (detail)="showDetail($event)"> </app-property-card>
+      }
+    </div>
   }
 </div>
