@@ -1,0 +1,212 @@
+<div
+  class="container mx-auto p8 bg-gray-50 min-h-screen flex justify-center items-start"
+>
+  <div class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8">
+    <button
+      class="mb-6 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-300 font-semibold"
+      (click)="goBack()"
+    >
+      Volver
+    </button>
+
+    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">
+      @if(isEditMode()) { Editando la Propiedad {{ propertyId() }}
+      } @else { Crear Nueva Propiedad }
+    </h1>
+
+    @if(loading()) {
+    <div class="flex justify-center items-center h-64">
+      <div
+        class="animate-spin rounded-full h-10 w-10 border-b-4 border-blue-500"
+      ></div>
+      <p class="ml-4 text-2xl text-blue-600">
+        Cargando el detalle de la propiedad...
+      </p>
+    </div>
+    } @else if (error()) {
+    <div
+      class="text-center p-8 text-2xl text-red-600 bg-red-100 border border-red-400 rounded-lg shadow-md"
+    >
+      <p class="font-bold mb-2">¡Error!</p>
+      <p>{{ error() }}</p>
+    </div>
+    } @else {
+    <form [formGroup]="propertyForm" (submit)="isEditMode() ? onUpdate() : onSave()">
+      <div>
+        <label for="address" class="blok text-sm font-medium text-gray-700 mb-1"
+          >Dirección</label
+        >
+        <input
+          id="address"
+          type="text"
+          formControlName="address"
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+          placeholder="Ej: Calle Falsa 123"
+        />
+        @if(propertyForm.get("address")?.invalid &&
+        propertyForm.get("address")?.touched) {
+        <p class="mt-1 text-sm text-red-600">La dirección es obligatoria</p>
+        }
+      </div>
+
+      <div>
+        <label for="city" class="blok text-sm font-medium text-gray-700 mb-1"
+          >Ciudad</label
+        >
+        <input
+          id="city"
+          type="text"
+          formControlName="city"
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+          placeholder="Ej: Bogota"
+        />
+        @if(propertyForm.get("city")?.invalid &&
+        propertyForm.get("city")?.touched) {
+        <p class="mt-1 text-sm text-red-600">La ciudad es obligatoria</p>
+        }
+      </div>
+
+      <div>
+        <label for="price" class="blok text-sm font-medium text-gray-700 mb-1"
+          >Precio</label
+        >
+        <input
+          id="price"
+          type="number"
+          formControlName="price"
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+          placeholder="Ej: 35000"
+        />
+        @if(propertyForm.get("price")?.invalid &&
+        propertyForm.get("price")?.touched) { @if
+        (propertyForm.get("price")?.errors?.["required"]) {
+        <p class="mt-1 text-sm text-red-600">El precio es obligatorio</p>
+        } @if (propertyForm.get("price")?.errors?.["min"]) {
+        <p class="mt-1 text-sm text-red-600">
+          El precio debe ser minimo de USD$1,000.00
+        </p>
+        } }
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 md:gap-6">
+        <div>
+          <label
+            for="bedrooms"
+            class="blok text-sm font-medium text-gray-700 mb-1"
+            >Habitaciones</label
+          >
+          <input
+            id="bedrooms"
+            type="number"
+            formControlName="bedrooms"
+            class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+            placeholder="Ej: 3"
+          />
+          @if(propertyForm.get("bedrooms")?.invalid &&
+          propertyForm.get("bedrooms")?.touched) { @if
+          (propertyForm.get("bedrooms")?.errors?.["required"]) {
+          <p class="mt-1 text-sm text-red-600">
+            Las habitaciones son obligatorias
+          </p>
+          } @if (propertyForm.get("bedrooms")?.errors?.["min"]) {
+          <p class="mt-1 text-sm text-red-600">
+            La propiedad debe tener minimo 0 habitaciones
+          </p>
+          } @if (propertyForm.get("bedrooms")?.errors?.["max"]) {
+          <p class="mt-1 text-sm text-red-600">
+            La propiedad debe tener maximo 10 habitaciones
+          </p>
+          } }
+        </div>
+
+        <div>
+          <label
+            for="bathrooms"
+            class="blok text-sm font-medium text-gray-700 mb-1"
+            >Baños</label
+          >
+          <input
+            id="bathrooms"
+            type="number"
+            formControlName="bathrooms"
+            class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+            placeholder="Ej: 2"
+          />
+          @if(propertyForm.get("bathrooms")?.invalid &&
+          propertyForm.get("bathrooms")?.touched) { @if
+          (propertyForm.get("bathrooms")?.errors?.["required"]) {
+          <p class="mt-1 text-sm text-red-600">Los baños son obligatorios</p>
+          } @if (propertyForm.get("bathrooms")?.errors?.["min"]) {
+          <p class="mt-1 text-sm text-red-600">
+            La propiedad debe tener minimo 0 baños
+          </p>
+          } @if (propertyForm.get("bathrooms")?.errors?.["max"]) {
+          <p class="mt-1 text-sm text-red-600">
+            La propiedad debe tener maximo 10 baños
+          </p>
+          } }
+        </div>
+      </div>
+
+      <div>
+        <label
+          for="imageUrl"
+          class="blok text-sm font-medium text-gray-700 mb-1"
+          >imagen</label
+        >
+        <input
+          id="imageUrl"
+          type="text"
+          formControlName="imageUrl"
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+          placeholder="Ej: http://host/imagen.png"
+        />
+        @if(propertyForm.get("imageUrl")?.invalid &&
+        propertyForm.get("imageUrl")?.touched) { @if
+        (propertyForm.get("imageUrl")?.errors?.["required"]) {
+        <p class="mt-1 text-sm text-red-600">La imagen es obligatoria</p>
+        } @if (propertyForm.get("imageUrl")?.errors?.["pattern"]) {
+        <p class="mt-1 text-sm text-red-600">
+          La URL de la imagen no es válida
+        </p>
+        } }
+      </div>
+
+      <div>
+        <label
+          for="description"
+          class="blok text-sm font-medium text-gray-700 mb-1"
+          >Descripción</label
+        >
+        <textarea
+          id="description"
+          type="text"
+          rows="4"
+          formControlName="description"
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+          placeholder="Describe la Propiedad"
+        ></textarea>
+        @if(propertyForm.get("description")?.invalid &&
+        propertyForm.get("description")?.touched) { @if
+        (propertyForm.get("description")?.errors?.["required"]) {
+        <p class="mt-1 text-sm text-red-600">La descripción es obligatoria</p>
+        } @if (propertyForm.get("description")?.errors?.["minlength"]) {
+        <p class="mt-1 text-sm text-red-600">
+          La descripción no tiene el tamaño minino requerido (20) caracteres
+        </p>
+        } }
+      </div>
+
+      <div class="flex justify-end mt-8">
+        <button
+          type="submit"
+          [disabled]="propertyForm.invalid"
+          class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          @if (!isEditMode()) { Guardar Propiedad } @else {Actualizar Propiedad }
+        </button>
+      </div>
+    </form>
+    }
+  </div>
+</div>

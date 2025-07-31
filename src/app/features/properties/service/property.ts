@@ -151,4 +151,29 @@ export class PropertyService {
       }, 500);
     });
   }
+
+  addNewProperty(property: Property): void {
+    // generar el id y agregarlo a la lista de elemntos
+    const newId =  Math.max(...this.properties().map(p => p.id)) + 1;
+    const propertyToAdd : Property = {...property, id: newId};
+    // this.properties.update(data => [ ...data, propertyToAdd]);
+    this.properties.update(data => {
+      data.push(propertyToAdd);
+      return data;
+    });
+  }
+
+  updateProperty(id: number, property: Property): void {
+    this.properties.update(data => {
+      const index = data.findIndex(p => p.id === id);
+      if (index > -1) {
+        data[index] = property;
+      }
+      return data;
+    });
+  }
+
+  deleteProperty(id: number): void {
+    this.properties.update(data => data.filter(p => p.id !== id));
+  }
 }

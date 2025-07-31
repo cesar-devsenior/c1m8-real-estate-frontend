@@ -1,0 +1,89 @@
+<div
+  class="container mx-auto p-8 bg-green-50 min-h-screen flex flex-col items-center"
+>
+  <div class="w-full max-4xl bg-white rounded-xl shadow-lg p-8">
+    <button
+      class="mb-6 px-4 py-2 bg-gray-200 text-gray-800 rounded-xl hover:bg-gray-300 transition-colors duration-300 font-semibold"
+      (click)="goBack()"
+    >
+      Volver a lista de propiedades
+    </button>
+
+    @if(loading()) {
+    <div class="flex justify-center items-center h-64">
+      <div
+        class="animate-spin rounded-full h-10 w-10 border-b-4 border-blue-500"
+      ></div>
+      <p class="ml-4 text-2xl text-blue-600">
+        Cargando el detalle de la propiedad...
+      </p>
+    </div>
+    } @else if (error()) {
+    <div
+      class="text-center p-8 text-2xl text-red-600 bg-red-100 border border-red-400 rounded-lg shadow-md"
+    >
+      <p class="font-bold mb-2">¡Error!</p>
+      <p>{{ error() }}</p>
+    </div>
+    } @else if (propertyDetail()) {
+    <div class="flex flex-col md:flex-row gap-8">
+      <div class="md:w-1/2">
+        <img
+          [src]="propertyDetail()!.imageUrl"
+          [alt]="'Imagen de ' + propertyDetail()!.address"
+          class="w-full h-auto rounded-xl shadow-md object-cover"
+          onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/666666?text=No+Image';"
+        />
+      </div>
+      <div class="md:w-1/2">
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-4">
+          {{ propertyDetail()!.address }}
+        </h1>
+        <p class="text-gray-600 text-xl mb-6">{{ propertyDetail()!.city }}</p>
+        <p class="text-gray-700 text-lg mb-4">
+          {{ propertyDetail()!.description }}
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div class="bg-blue-100 p-4 rounded-lg shadow-sm">
+            <p class="text-blue-800 font-semibold">Precio:</p>
+            <p class="text-blue-700 text-lg">
+              {{ propertyDetail()!.price | currency }}
+            </p>
+          </div>
+          <div class="bg-blue-100 p-4 rounded-lg shadow-sm">
+            <p class="text-blue-800 font-semibold">Habitaciones:</p>
+            <p class="text-blue-700 text-lg">
+              {{ propertyDetail()!.bedrooms }}
+            </p>
+          </div>
+          <div class="bg-blue-100 p-4 rounded-lg shadow-sm">
+            <p class="text-blue-800 font-semibold">Baños:</p>
+            <p class="text-blue-700 text-lg">
+              {{ propertyDetail()!.bathrooms }}
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+          <a
+            [routerLink]="['/properties/edit/', propertyId()]"
+            class="text-center bg-indigo-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-300 shadow-md hover:shadow-lg"
+            >Editar propiedad</a
+          >
+          <button
+            class="text-center bg-red-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-300 shadow-md hover:shadow-lg hover:cursor-pointer"
+            (click)="onDelete()"
+          >
+            Eliminar propiedad
+          </button>
+        </div>
+      </div>
+    </div>
+    } @else {
+    <div
+      class="text-center p-8 text-2xl text-gray-500 bg-gray-100 border border-gray-300 rounded-lg shadow-md"
+    >
+      <p>No se pudo cargar los detalles de la propiedad</p>
+    </div>
+    }
+  </div>
+</div>

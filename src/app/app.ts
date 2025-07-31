@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { PropertyList } from "./features/properties/components/property-list/property-list";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-root',
-  imports: [PropertyList],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
