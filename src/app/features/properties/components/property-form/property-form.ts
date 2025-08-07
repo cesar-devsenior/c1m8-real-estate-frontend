@@ -56,16 +56,18 @@ export class PropertyForm {
         this.loading.set(true);
         this.error.set(undefined);
         const id = parseInt(this.propertyId() ?? '0');
-        this.service
-          .getProperty(id)
-          .then((data) => {
+
+        this.service.getProperty(id)
+        .subscribe({
+          next: (data) => {
             this.propertyForm.patchValue(data);
             this.loading.set(false);
-          })
-          .catch((error) => {
-            this.error.set(error);
+          },
+          error: (error) => {
+            this.error.set(error.error.message);
             this.loading.set(false);
-          });
+          }
+        });
       } else {
         this.isEditMode.set(false);
         this.loading.set(false);
@@ -84,9 +86,16 @@ export class PropertyForm {
     const newProperty: Property = this.propertyForm.value as Property;
 
     // Enviar a guardar al servicio de propiedades
-    this.service.addNewProperty(newProperty);
-    alert("Nueva propiedad creada");
-    this.goBack();
+    this.service.addNewProperty(newProperty).subscribe({
+      next: (data) => {
+        alert("Nueva propiedad creada");
+        this.goBack();
+      },
+      error: (error) => {
+        this.error.set(error);
+        this.loading.set(false);
+      }
+    });
   }
 
   onUpdate() {

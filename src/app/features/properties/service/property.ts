@@ -1,10 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 import { Property } from '../model/property.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PropertyService {
+export class DummyPropertyService {
   private properties = signal<Property[]>([
     {
       id: 1,
@@ -175,5 +177,36 @@ export class PropertyService {
 
   deleteProperty(id: number): void {
     this.properties.update(data => data.filter(p => p.id !== id));
+  }
+}
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PropertyService {
+
+  private baseUrl = 'http://localhost:8080/api/properties';
+
+  constructor(private http: HttpClient){}
+
+  getAllProperties():  Observable<Property[]>{
+    return this.http.get<Property[]>(`${this.baseUrl}`);
+  }
+
+  getProperty(id: number): Observable<Property>{
+    return this.http.get<Property>(`${this.baseUrl}/${id}`);
+  }
+
+  addNewProperty(property: Property): Observable<Property>{
+    return this.http.post<Property>(`${this.baseUrl}`, property);
+  }
+
+  updateProperty(id: number, property: Property): Observable<Property>{
+    return this.http.put<Property>(`${this.baseUrl}/${id}`, property);
+  }
+
+  deleteProperty(id: number){
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

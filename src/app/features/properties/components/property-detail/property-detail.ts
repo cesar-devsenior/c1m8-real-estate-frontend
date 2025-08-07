@@ -45,16 +45,18 @@ export class PropertyDetail {
     this.error.set(undefined);
     this.loading.set(true);
 
-    this.propertyService
-      .getProperty(id)
-      .then((p) => {
+    this.propertyService.getProperty(id)
+    .subscribe({
+      next: (p) => {
         this.propertyDetail.set(p);
         this.loading.set(false);
-      })
-      .catch((error) => {
+      },
+      error: (error) => {
         this.error.set(error);
         this.loading.set(false);
-      });
+      }
+    });
+
   }
 
   goBack(): void {
@@ -63,8 +65,20 @@ export class PropertyDetail {
   }
 
   onDelete() {
-    this.propertyService.deleteProperty(parseInt(this.propertyId()!));
-    alert("Propiedad eliminada correctamente");
-    this.goBack();
+    this.error.set(undefined);
+    this.loading.set(true);
+
+    this.propertyService.deleteProperty(parseInt(this.propertyId()!))
+    .subscribe({
+      next: () => {
+        alert("Propiedad eliminada correctamente");
+        this.loading.set(false);
+        this.goBack();    
+      },
+      error: (error) => {
+        this.error.set(error);
+        this.loading.set(false);
+      }
+    });
   }
 }

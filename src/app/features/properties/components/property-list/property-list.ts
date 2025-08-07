@@ -47,12 +47,13 @@ export class PropertyList implements OnInit {
 
     this.service
       .getAllProperties()
-      .then((data) => {
-        this.allProperties.set(data);
-        this.properties.set(this.allProperties());
-        this.loading.set(false);
-        
-      })
-      .catch((error) => this.error.set(error));
+      .subscribe({
+        next: (data) => {
+          this.allProperties.set(data);
+          this.properties.set(this.allProperties());
+          this.loading.set(false);
+        },
+        error: (error) => this.error.set(error)
+      });
   }
 }
