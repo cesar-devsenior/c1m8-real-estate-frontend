@@ -2,3 +2,16 @@ h1 {
     text-align: center;
 }
 
+.main-content {
+    min-height: calc(100vh - 70px);
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 15px;
+    }
+}
+

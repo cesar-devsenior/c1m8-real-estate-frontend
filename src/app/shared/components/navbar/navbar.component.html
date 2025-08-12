@@ -1,0 +1,33 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a routerLink="/properties" class="brand-link">
+        <span class="brand-icon">🏠</span>
+        <span class="brand-text">Real Estate</span>
+      </a>
+    </div>
+
+    <div class="navbar-menu">
+      <a routerLink="/properties" class="nav-link">Propiedades</a>
+    </div>
+
+    <div class="navbar-auth">
+      <ng-container *ngIf="authService.isAuthenticated(); else loginButton">
+        <div class="user-info">
+          <span class="username">{{ authService.currentUser()?.username }}</span>
+          <button class="logout-btn" (click)="logout()">
+            <span class="logout-icon">🚪</span>
+            Cerrar Sesión
+          </button>
+        </div>
+      </ng-container>
+      
+      <ng-template #loginButton>
+        <a routerLink="/auth/login" class="login-btn">
+          <span class="login-icon">🔑</span>
+          Iniciar Sesión
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</nav>

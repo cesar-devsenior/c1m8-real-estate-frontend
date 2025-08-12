@@ -1,0 +1,74 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Iniciar Sesión</h2>
+      <p>Accede a tu cuenta de Real Estate</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">Correo Electrónico</label>
+        <input
+          type="email"
+          id="username"
+          formControlName="email"
+          placeholder="Ingresa tu usuario"
+          [class.error]="username?.invalid && username?.touched"
+        />
+        @if (username?.invalid && username?.touched) {
+          <div class="error-message">
+            @if (username?.errors?.['required']) {
+              <span>El usuario es requerido</span>
+            }
+            @if (username?.errors?.['minlength']) {
+              <span>El usuario debe tener al menos 3 caracteres</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Ingresa tu contraseña"
+          [class.error]="password?.invalid && password?.touched"
+        />
+        @if (password?.invalid && password?.touched) {
+          <div class="error-message">
+            @if (password?.errors?.['required']) {
+              <span>La contraseña es requerida</span>
+            }
+            @if (password?.errors?.['minlength']) {
+              <span>La contraseña debe tener al menos 6 caracteres</span>
+            }
+          </div>
+        }
+      </div>
+
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <button 
+        type="submit" 
+        class="login-button"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        @if (!isLoading) {
+          <span>Iniciar Sesión</span>
+        } @else {
+          <span>Iniciando...</span>
+        }
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p>¿No tienes cuenta? <a href="#" class="link">Regístrate aquí</a></p>
+    </div>
+  </div>
+</div>
